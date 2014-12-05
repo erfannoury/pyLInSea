@@ -1,0 +1,2 @@
+Description on format of Relevancy Judgment file:
+Query_Number First_Relevant_Document Second_Relevant_Document Third_Relevant_Document . . . 
