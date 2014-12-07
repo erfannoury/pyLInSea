@@ -6,13 +6,16 @@ import re, os, sys
 import tarfile
 from datetime import datetime as dt
 
+
 import lucene
 from java.io import File
-from org.apache.lucene.analysis.standard import StandardAnalyzer
+
 from org.apache.lucene.index import IndexWriterConfig, IndexWriter, FieldInfo
 from org.apache.lucene.document import Document, Field, FieldType, IntField
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.util import Version
+
+from customAnalyzer import PorterStemmerAnalyzer
 
 document_folder = 'cran/'
 document_name = 'cran.all.1400'
@@ -126,7 +129,8 @@ def main():
     print 'lucene version ', lucene.VERSION
     version = Version.LUCENE_CURRENT
     index_store = SimpleFSDirectory(File(index_path))
-    analyzer = StandardAnalyzer(version)
+    # analyzer = StandardAnalyzer(version)
+    analyzer = PorterStemmerAnalyzer()
     config = IndexWriterConfig(version, analyzer)
     config.setOpenMode(IndexWriterConfig.OpenMode.CREATE)
     writer = IndexWriter(index_store, config)
