@@ -8,12 +8,14 @@ from datetime import datetime as dt
 
 import lucene
 from java.io import File
-from org.apache.lucene.analysis.standard import StandardAnalyzer
+
 from org.apache.lucene.index import DirectoryReader
 from org.apache.lucene.queryparser.classic import QueryParser
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.search import IndexSearcher
 from org.apache.lucene.util import Version
+
+from customAnalyzer import PorterStemmerAnalyzer
 
 document_folder = 'cran/'
 document_name = 'cran.all.1400'
@@ -33,7 +35,8 @@ content_field = 'content'
 docid_field = 'docid'
 
 def search(searcher, analyzer):
-	query = QueryParser(Version.LUCENE_CURRENT, content_field, analyzer).parse('temperature and velocity')
+	information_need = 'what similarity laws must be obeyed when constructing aeroelastic models of heated high speed aircraft'
+	query = QueryParser(Version.LUCENE_CURRENT, content_field, analyzer).parse(information_need)
 	scoreDocs = searcher.search(query, 20).scoreDocs
 
 	print 'total matching docs: ', len(scoreDocs)
@@ -54,7 +57,7 @@ def main():
 	version = Version.LUCENE_CURRENT
 	directory = SimpleFSDirectory(File(index_path))
 	searcher = IndexSearcher(DirectoryReader.open(directory))
-	analyzer = StandardAnalyzer(version)
+	analyzer = PorterStemmerAnalyzer()
 
 	start = dt.now()
 	search(searcher, analyzer)
