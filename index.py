@@ -97,10 +97,11 @@ def indexCranFull(path, writer):
                 line = txt.readline()
                 if line.startswith('.A'):
                     break
-                title = ' '.join([title, line])
+                title = ' '.join([title, line]).strip()
 
             line = txt.readline()
-            authors = ' '.join(line.split('and'))
+            # authors = ' '.join(line.split('and'))
+            authors = line.strip()
 
             #.B, its corresponding line and .W
             txt.readline()
@@ -114,7 +115,7 @@ def indexCranFull(path, writer):
                     break
                 if line == '':
                     break
-                body = ' '.join([body, line])
+                body = ' '.join([body, line]).strip()
 
             doc = Document()
             doc.add(Field(title_field, title, tft))
